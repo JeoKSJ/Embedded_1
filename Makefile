@@ -1,4 +1,4 @@
-all :
+all : final.elf
 	gcc final.elf -c 1.o 2.o
 1.o : 1.c myProject.h
 	gcc 1.c -o 1.o
