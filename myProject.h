@@ -4,7 +4,7 @@
 #define MYPROJECT_H
 
 
-int printMyname1(void);
-int printMyname2(void);
+int printMyName1(void);
+int printMyName2(void);
 
 #endif
