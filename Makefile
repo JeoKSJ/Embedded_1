@@ -1,6 +1,6 @@
-all : final.elf
-	gcc final.elf -c 1.o 2.o
+final.elf : 1.o 2.o main.c
+	gcc 1.o 2.o main.c -o final.elf
 1.o : 1.c myProject.h
-	gcc 1.c -o 1.o
+	gcc -c 1.c
 2.o : 2.c myProject.h
-	gcc 2.c -o 2.o
+	gcc -c 2.c

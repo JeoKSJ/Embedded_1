@@ -1,4 +1,3 @@
-#include <stdio.h>
 #ifdef MYPROJECT_H
 
 #define MYPROJECT_H
