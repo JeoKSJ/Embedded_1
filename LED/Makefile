@@ -1,7 +1,17 @@
-obj-m := led.o
-export ARCH=arm
-export CROSS_COMPILE=arm-linux-gnueabi-
+CC = arm-linux-gnueabi-gcc
+AR = arm-linux-gnueabi-ar
 
-all : led.h led.c
-	arm-linux-gnueabi-gcc -c led.c -o led.o
-	arm-linux-gnueabi-ar rc libMyPeri.a led.o
+all : libMyPeri.a ledtest
+		
+libMyPeri.a : led.o
+	$(AR) rc libMyPeri.a led.o
+
+led.o : led.h led.c
+	$(CC) led.c -o led.o -c
+ledtest : ledtest.c led.h libMyPeri.a
+	$(CC) ledtest.c -o ledtest -l MyPeri -L.	
+	
+clean: 
+	rm *.o -rf
+	rm *.a -rf	
+	rm ledtest -rf
