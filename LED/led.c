@@ -7,16 +7,18 @@
 static int ledStatus = 0;
 static int fd = 0; 
 int ledLibInit(void) // LED 초기화
-{   printf("LED LIBRARY INITIALIZE...\r\n");
+{   
+	printf("LED LIBRARY INITIALIZE...\r\n");
 	fd = open(LED_DRV_NODE, O_RDWR);
     printf("FD: %d\r\n", fd); // 디바이스 드라이버 개방
     if (fd<0)
-{printf("Device open error!\n\r");
- exit(1);
-}
- ledStatus =0;
- ledLibRaw(ledStatus);
- return 1;
+	{
+		printf("Device open error!\n\r");
+		exit(1);
+	}
+	ledStatus =0;
+	ledLibRaw(ledStatus);
+	return 1;
 	//ledValue = 0; // LED 값 0으로 초기화
 }
 int ledLibOnOff(int ledNumber, int onOff) // LED 켜기 / 끄기
@@ -30,31 +32,23 @@ int ledLibOnOff(int ledNumber, int onOff) // LED 켜기 / 끄기
 }
 int ledLibStatus(void)
 {
- return ledStatus;
-
+ 	return ledStatus;
 }
-int ledLibBlink(int ledNumber, int nth, int msec){
-ledLibMorseBlink(ledNumber, nth, msec, msec);
-
-
-
-
-
+int ledLibBlink(int ledNumber, int nth, int msec)
+{
+	ledLibMorseBlink(ledNumber, nth, msec, msec);
 } //1~8까지의 LED를 하다 골라서 N번 깜박임.주기는 MSEC
 
 int ledLibMorseBlink(int ledNumber, int nth, int msecOn, int msecOff)
 {
-int i=0;
-for(i=0;i<nth;i++)
-{
-ledLibOnOff(ledNumber,1); //on
-usleep(1000*msecOn);
-ledLibOnOff(ledNumber,0); //OFF
-usleep(1000*msecOff);
-}
-
-
-
+	int i=0;
+	for(i=0;i<nth;i++)
+	{
+		ledLibOnOff(ledNumber,1); //on
+		usleep(1000*msecOn);
+		ledLibOnOff(ledNumber,0); //OFF
+		usleep(1000*msecOff);
+	}
 }
 
 int ledLibExit(void) // 종료 함수
@@ -66,20 +60,18 @@ int ledLibExit(void) // 종료 함수
 
 
 int ledLibRaw(char ledwannabe){
-if(fd >0)
-{ write(fd, &ledwannabe, 1);
-//do something
+	if(fd >0)
+	{ 
+		write(fd, &ledwannabe, 1);
+		//do something
+	}
+	else
+	{
+	printf("Wrong! you must open device Node!\r\n");
+	exit(2);
+	}
+	ledStatus = ledwannabe;
+	return 1;
 }
-else
-{
-printf("Wrong! you must open device Node!\r\n");
-exit(2);
-}
-ledStatus = ledwannabe;
-return 1;
-}
-
-
-
 //이 함수를 호출하면 ledwannabe에 맞게 8개의 led를 전부 제어한다. 예를 들어 ledLibRaw(0x80); 1개만 켜진다.
 
