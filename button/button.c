@@ -12,7 +12,7 @@
 #define INPUT_DEVICE_LIST "/dev/input/event" //실제 디바이스 드라이버 노드파일: 뒤에 숫자가 붙음., ex)/dev/input/event5
 #define PROBE_FILE "/proc/bus/input/devices" //PPT에 제시된 "이 파일을 까보면 event? 의 숫자를 알수 있다"는 바로 그 파일
 #define HAVE_TO_FIND_1 "N: Name=\"ecube-button\"\n"
-#define HAVE_TO_FIND_2 "H: Handlers=kbd event
+#define HAVE_TO_FIND_2 "H: Handlers=kbd event"
 
 
 #include "button.h"
@@ -32,8 +32,7 @@ int probeButtonPath(char *newPath)
 int returnValue = 0; //button에 해당하는 event#을 찾았나?
 int number = 0; //찾았다면 여기에 집어넣자
 FILE *fp = fopen(PROBE_FILE,"rt"); //파일을 열고
-#define HAVE_TO_FIND_1 "N: Name=\"ecube-button\"\n"
-#define HAVE_TO_FIND_2 "H: Handlers=kbd event"
+
 while(!feof(fp)) //끝까지 읽어들인다.
 {
 char tmpStr[200]; //200자를 읽을 수 있게 버퍼
@@ -67,7 +66,7 @@ return returnValue;
 }
 
 
-void buttonThFunc(void)  //쓰레드는 같은 주소공간을 공유한다.
+void* buttonThFunc()  //쓰레드는 같은 주소공간을 공유한다.
  {
    
 while (1) {
@@ -142,7 +141,7 @@ else;
 
 
 
-int buttonInit(void)
+int buttonInit()
 {
 
 
@@ -163,7 +162,7 @@ if (msgID == -1) //만약 메시지큐 식별자각 -1을 가진다면
     return -1; //-1을 return한다.
 }
 
-pthread_create(&buttonTh_id, NULL, &buttonThFunc, NULL);
+pthread_create(&buttonTh_id, NULL, buttonThFunc, NULL);
 
 
 
