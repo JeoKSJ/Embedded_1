@@ -12,7 +12,8 @@
 #define BUZZER_FREQUENCY_NAME "frequency"
 
 // buzzertest에 쓰는 scale 은 총 8개(262,294,330,349,392,440,494,523)
-
+static char gBuzzerBaseSysDir[128];
+int fd;
 int findBuzzerSysPath(){ //버저 경로 찾는 것 = 버저의 초기화구문(buzzerInit)
     DIR * dir_info = opendir(BUZZER_BASE_SYS_PATH);
     int ifNotFound = 1;
