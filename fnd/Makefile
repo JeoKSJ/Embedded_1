@@ -1,18 +1,19 @@
 CC = arm-linux-gnueabi-gcc
 AR = arm-linux-gnueabi-ar
 
-all: libMyPeri.a fndtest
+all : libMyPeri.a textlcdtest
 
-libMyPeri.a : fnd.o
-	$(AR) rc libMyPeri.a fnd.o
+libMyPeri.a : textlcd.o
+	$(AR) rc libMyPeri.a textlcd.o
 
-fnd.o : fnd.h fnd.c
-	$(CC) fnd.c -o fnd.o -c
+textlcd.o : textlcd.h textlcd.c
+	$(CC) textlcd.c -o textlcd.o -c
 
-fndtest : fndtest.c fnd.h libMyPeri.a
-	$(CC) fndtest.c -o fndtest -l MyPeri -L.
+textlcdtest : textlcdtest.c textlcd.h libMyPeri.a
+	$(CC) textlcdtest.c -o textlcdtest -l MyPeri -L.
 
-clean:
+clean :
 	rm *.o -rf
 	rm *.a -rf
-	rm fndtest -rf
+	rm textlcdtest -rf
+
