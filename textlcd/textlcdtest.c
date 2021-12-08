@@ -45,7 +45,8 @@ int main(int argc , char **argv)
 
 	printf("string:%s\n",argv[2]);
 	printf("string:%s\n",argv[3]);
-	
+	if(argv[3]==NULL)
+	{argv[3]="a";}
 	textlcdwrite(argv[2],argv[3],linenum);
 	
 	textlcdexit();
