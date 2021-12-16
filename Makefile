@@ -1,10 +1,10 @@
 CC = arm-linux-gnueabi-gcc
 AR = arm-linux-gnueabi-ar
 
-all : libMyPeri.a main
+all : libMyPeri.a project.elf
 
-main : main.c libMyPeri.a
-	$(CC) main.c -o main -l MyPeri -L. -lpthread
+project.elf : main.c libMyPeri.a
+	$(CC) main.c -o project.elf -l MyPeri -L. -lpthread
 libMyPeri.a : button.o buzzer.o fnd.o textlcd.o colorLed.o temperature.o
 	$(AR) rc libMyPeri.a button.o buzzer.o fnd.o textlcd.o colorLed.o temperature.o
 
