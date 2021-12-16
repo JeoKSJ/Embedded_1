@@ -31,7 +31,7 @@
 #define PROBE_FILE "/proc/bus/input/devices"
 
 static int Fire_Emerge = 0; // 0 -> Green | 1-> Yellow | 2 -> Orange | 3 -> Red & Fire_Alarm On
-
+static int hi = 0;
 int init() // Init Func
 {
     pwmLedInit();
@@ -81,13 +81,12 @@ int lcdtime(){ // 현재시간 출력
 
 void FNDLight_temperature() // FND에 1초마다 온도 측정값 & 현재 시간 출력 (이건 끊기지않게끔 조정)
 {
-    while(1)
+    //while(1)
     {
         fndtime();
-
         double temp = nowTemp();
-        char buf[10];
         printf("current temperature is %lf \n",temp);
+        char buf[5];
         sprintf(buf, "%lf", temp);
         textlcdwrite("Current Temperature",buf,0); // 현재 시간 1초마다 TXTLCD에 띄움
 
@@ -112,45 +111,71 @@ void FNDLight_temperature() // FND에 1초마다 온도 측정값 & 현재 시�
             light_red();
             if(Fire_Emerge != 3) Fire_Emerge = 3; // 화재가 났음으로 설정
         }
-        sleep(1); // 이건 잘 모르겠음
+
+        if(Fire_Emerge == 3)
+        {
+
+        }
+        sleep(1);
     }
 }
-
 int fire_alarm()
 {
     while(1)
     {
-        if(Fire_Emerge != 0) {buzzerSiren();}
+        if(Fire_Emerge != 3) {buzzerSiren();}
     }
 }
 int button1(void) // 버튼 1 누를 시 : 사용법 화면
 {
-
+    textlcdwrite("button2:ex_alarm","button3:temper",0);
 }
 int button2(void) // 버튼 2 누를 시 : 작동 예시 화면(모든것 다 작동)
 {
-
+    Fire_Emerge = 3; // 누르는 동안은 지속
 }
-int button3(void) // 버튼 3 누를 시 : 실제 상황(현재 상황 표시)
+int button3(void) // 버튼 3 누를 시 : 현재 상황 표시
 {
     switch (Fire_Emerge)
     {
     case 0: // 정상
-        
+        textlcdwrite("Current Temper","GOOD(~30)",0);
         break;
     case 1: // 주의
-
+        textlcdwrite("Current Temper","Caution(30~50)",0);
         break;
     case 2: // 위험
-
+        textlcdwrite("Current Temper","Danger(50~80)",0);
         break;
+    default: break;
     }
 }
 int main(int argc, char **argv)
 {
     init(); // 전체 초기화
-
-    FNDLight_temperature();
     
-
+    BUTTON_MSG_T RxDataButton;
+    int msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
+    
+    while(1)
+    {
+        hi = msgrcv(msgID, &RxDataButton, sizeof(RxDataButton)-sizeof(RxDataButton.messageNum),0,0);
+        if(hi != -1)
+        {
+            switch (RxDataButton.keyInput)
+            {
+            case 0 : // Home 키
+                button1();
+                break;
+            case 1 : // Back 키
+                button2();
+                break;
+            case 2 : // Search 키
+                button3();
+                break;
+            default:break;
+            }
+        }
+    }
+    buttonExit();
 }

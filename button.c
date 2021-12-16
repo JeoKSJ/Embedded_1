@@ -81,12 +81,12 @@ if ( stEvent.type == EV_KEY)
 printf("EV_KEY(");
 switch(stEvent.code)
 {
-case KEY_VOLUMEUP: TxDataButton.keyInput=0; break;
-case KEY_HOME: TxDataButton.keyInput=1; break;
-case KEY_SEARCH: TxDataButton.keyInput=2; break;
-case KEY_BACK: TxDataButton.keyInput=3; break;
-case KEY_MENU: TxDataButton.keyInput=4;  break;
-case KEY_VOLUMEDOWN: TxDataButton.keyInput=5; break;
+case KEY_VOLUMEUP: TxDataButton.keyInput=5; break; // 5
+case KEY_HOME: TxDataButton.keyInput=0; break; // 1
+case KEY_SEARCH: TxDataButton.keyInput=2; break; // 3
+case KEY_BACK: TxDataButton.keyInput=1; break; // 2
+case KEY_MENU: TxDataButton.keyInput=4;  break; // 4
+case KEY_VOLUMEDOWN: TxDataButton.keyInput=6; break; // 6
 
 default: break;
 }
