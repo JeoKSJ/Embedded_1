@@ -12,8 +12,13 @@
 #define BUZZER_FREQUENCY_NAME "frequency"
 
 // buzzertest에 쓰는 scale 은 총 8개(262,294,330,349,392,440,494,523)
+const int musicScale[MAX_SCALE_STEP] =
+{
+    262, 294, 330, 349, 392, 440, 494, 523
+};
 static char gBuzzerBaseSysDir[128];
 int fd;
+
 int findBuzzerSysPath(){ //버저 경로 찾는 것 = 버저의 초기화구문(buzzerInit)
     DIR * dir_info = opendir(BUZZER_BASE_SYS_PATH);
     int ifNotFound = 1;
@@ -65,9 +70,8 @@ int buzzerInit(void) // 초기화
 /* 사실 이것을 안해도 위에서 findBuzzerSysPath에서 ifNotFound를 바로 리턴시켜서 그 구문을 종료해도 된다.
 
 */
-int buzzerPlaySong(int scale)
+int buzzerPlaySong(int freq)
 {
-    int freq; // frequency 선언
     switch(freq)
     {
         case 0: // 262(도)
@@ -107,4 +111,9 @@ int buzzerStopSong(void)
 int buzzerExit(void)
 {
     close(fd); // 위에서 findBuzzerSysPath로 찾은 경로에서 read로 열고 바로 닫음.
+}
+int buzzerSiren(void)
+{
+    buzzerPlaySong(7);
+    buzzerPlaySong(0);
 }

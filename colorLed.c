@@ -100,12 +100,12 @@ int pwmSetPeriod(int Period, int pwmIndex)
 int pwmSetPercent(int percent, int ledColor)   
 {
     
-    if((percent <0) || (percent > 100))
+    if((percent < 0) || (percent > 100))
     {
         printf ("Wrong percent: %d\r\n", percent);
         return 0;
     }
-    int duty = (100- percent) * PWM_PERIOD_NS / 100;  
+    int duty = (100 - percent) * PWM_PERIOD_NS / 100;  
     pwmSetDuty(duty, ledColor);
     return 0;
 } // Set PWM % Index

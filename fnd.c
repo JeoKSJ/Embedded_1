@@ -13,9 +13,6 @@
 
 #define FND_DRIVER_NAME		"/dev/perifnd"
 
-
-
-
 #define ONE_SEG_DISPLAY_TIME_USEC	1000
 // return 1 => success  , 0 => error
 
@@ -47,12 +44,12 @@ int fndDisp(int num , int dotflag)
 		stWriteData.DataValid[i] = 1;
 	}
 	// if 6 fnd
-	temp = num % 1000000;	stWriteData.DataNumeric[0]= temp /100000;
-	temp = num % 100000;	stWriteData.DataNumeric[1]= temp /10000;
-	temp = num % 10000;		stWriteData.DataNumeric[2] = temp /1000;
-	temp = num %1000;		stWriteData.DataNumeric[3] = temp /100;
-	temp = num %100;		stWriteData.DataNumeric[4] = temp /10;
-							stWriteData.DataNumeric[5] = num %10;
+	temp = num % 1000000;   stWriteData.DataNumeric[0] = temp / 100000;
+	temp = num % 100000;	stWriteData.DataNumeric[1] = temp / 10000;
+	temp = num % 10000;	    stWriteData.DataNumeric[2] = temp / 1000;
+	temp = num % 1000;	    stWriteData.DataNumeric[3] = temp / 100;
+	temp = num % 100;		stWriteData.DataNumeric[4] = temp / 10;
+							stWriteData.DataNumeric[5] = num % 10;
 
 	fd = open(FND_DRIVER_NAME,O_RDWR);
 	if ( fd < 0 )
@@ -89,25 +86,18 @@ int fndOff()
 }
 
 int fndtime()
-{
+{   
+    int number;
+    struct tm *ptmcur;
+    time_t tTime;
+    if ( -1 == time(&tTime) )
+	    return -1; 
 
-int number;
-struct tm *ptmcur;
-		time_t tTime;
-		if ( -1 == time(&tTime) )
-			return -1; 
+    ptmcur = localtime(&tTime);
 
-		ptmcur = localtime(&tTime);
+    number = ptmcur->tm_hour * 10000;
+    number += ptmcur->tm_min *100;
+    number += ptmcur->tm_sec;
 
-		number = ptmcur->tm_hour * 10000;
-		number += ptmcur->tm_min *100;
-		number += ptmcur->tm_sec;
-
-		fndDisp(number , 0b1010);
-
-
-
-
-
-
+    fndDisp(number , 0b1010);
 }
