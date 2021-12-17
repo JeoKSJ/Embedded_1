@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include "buzzer.h"
+
 #define MAX_SCALE_STEP	8										
 #define BUZZER_BASE_SYS_PATH "/sys/bus/platform/devices/"		
 #define BUZZER_FILENAME "peribuzzer"
