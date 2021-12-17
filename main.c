@@ -63,7 +63,15 @@ int light_red() // Red
     pwmSetPercent(0,1);
     pwmSetPercent(100,2);
 }
+int light_white() // 
+{
+    pwmSetPercent(100,0);
+    pwmSetPercent(100,1);
+    pwmSetPercent(100,2);
+}
 /*
+
+
 int lcdtime(){ // 현재시간 출력
     int number;
     struct tm *ptmcur;
@@ -82,6 +90,8 @@ int lcdtime(){ // 현재시간 출력
 int main(void)//void FNDLight_temperature() // FND에 1초마다 온도 측정값 & 현재 시간 출력 (이건 끊기지않게끔 조정)
 {
     init();
+    BUTTON_MSG_T RxDataButton;
+    int msgID = msgget(MESSAGE_ID, IPC_CREAT | 0666);
 
     while(1){
         double temp = nowTemp();
@@ -89,7 +99,6 @@ int main(void)//void FNDLight_temperature() // FND에 1초마다 온도 측정�
         fndDisp(temp2, 0);
         printf("current temperature is %lf \n",temp);
         textlcdwrite("Fire_alarm_call","Test:30~32 (C)",0); // 현재 시간 1초마다 TXTLCD에 띄움
-
         // 온도 관련 현재 상태를 ColorLED에 표시
         if (temp < 30.0) // 초록(편안)
         {
@@ -111,7 +120,6 @@ int main(void)//void FNDLight_temperature() // FND에 1초마다 온도 측정�
             light_red();
             if(Fire_Emerge != 3) Fire_Emerge = 3; // 화재가 났음으로 설정
         }
-
         if(Fire_Emerge == 3)
         {
             buzzerPlaySong(7);
